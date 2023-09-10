@@ -12,6 +12,9 @@ class TestOrderWithAuthorization:
     response = requests.post("https://stellarburgers.nomoreparties.site/api/orders", headers=headers, data=json_data)
     assert response.status_code == 200
     assert response.json()['success'] == True
+    assert response.json()['name']
+    assert response.json()['order']
+
 
  def test_create_order_with_authorization_without_ingredients(self, login_user):
     json_data = {
@@ -19,7 +22,7 @@ class TestOrderWithAuthorization:
     response_token = login_user.json()['accessToken']
     headers = {"authorization": response_token}
     response = requests.post("https://stellarburgers.nomoreparties.site/api/orders", headers=headers, data=json_data)
-    assert response.status_code == 400
+    assert response.status_code == 400, "It didn't return the response code we were expecting."
     assert response.json()['success'] == False
     assert response.json()['message'] == "Ingredient ids must be provided"
 
@@ -31,7 +34,7 @@ class TestOrderWithoutAuthorization:
         "ingredients": ["61c0c5a71d1f82001bdaaa6d", "61c0c5a71d1f82001bdaaa71"]
     }
     response = requests.post("https://stellarburgers.nomoreparties.site/api/orders", data=json_data)
-    assert response.status_code == 200
+    assert response.status_code == 200, "It didn't return the response code we were expecting."
     assert response.json()['success'] == True
 
 
@@ -40,7 +43,7 @@ class TestOrderWithoutAuthorization:
     json_data = {
     }
     response = requests.post("https://stellarburgers.nomoreparties.site/api/orders", data=json_data)
-    assert response.status_code == 400
+    assert response.status_code == 400, "It didn't return the response code we were expecting."
     assert response.json()['success'] == False
     assert response.json()['message'] == "Ingredient ids must be provided"
 
@@ -53,4 +56,4 @@ class TestOrderWithInvalidIngredients:
     response_token = login_user.json()['accessToken']
     headers = {"authorization": response_token}
     response = requests.post("https://stellarburgers.nomoreparties.site/api/orders", headers=headers, data=json_data)
-    assert response.status_code == 500
+    assert response.status_code == 500, "It didn't return the response code we were expecting."

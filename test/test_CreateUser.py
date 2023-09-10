@@ -24,7 +24,7 @@ class TestCreatingUserWithoutParameter:
         "name": "365к3"
     }
     response = requests.post("https://stellarburgers.nomoreparties.site/api/auth/register", data=json_data)
-    assert response.status_code == 403, f"Status code 200 was expected and code {response.status_code} was returned."
+    assert response.status_code == 403, "It didn't return the response code we were expecting."
     assert response.json()['success'] == False
     assert response.json()['message'] == "Email, password and name are required fields"
 
@@ -34,7 +34,7 @@ class TestCreatingUserWithoutParameter:
         "name": "365к3"
     }
     response = requests.post("https://stellarburgers.nomoreparties.site/api/auth/register", data=json_data)
-    assert response.status_code == 403, f"Status code 200 was expected and code {response.status_code} was returned."
+    assert response.status_code == 403, "It didn't return the response code we were expecting."
     assert response.json()['success'] == False
     assert response.json()['message'] == "Email, password and name are required fields"
 
@@ -44,6 +44,6 @@ class TestCreatingUserWithoutParameter:
         "password": "333к6333"
     }
     response = requests.post("https://stellarburgers.nomoreparties.site/api/auth/register", data=json_data)
-    assert response.status_code == 403, f"Status code 200 was expected and code {response.status_code} was returned."
+    assert response.status_code == 403, "It didn't return the response code we were expecting."
     assert response.json()['success'] == False
     assert response.json()['message'] == "Email, password and name are required fields"

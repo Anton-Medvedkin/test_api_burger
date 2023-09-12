@@ -1,7 +1,8 @@
 import pytest
 import requests
+from resources.config import *
 
-def test_receipt_order_using_authenticated(login_user, base_url):
+def test_receipt_order_using_authenticated(login_user):
     response_token = login_user.json()['accessToken']
     headers = {"authorization": response_token}
     response = requests.get(f"{base_url}orders", headers=headers)
@@ -10,7 +11,7 @@ def test_receipt_order_using_authenticated(login_user, base_url):
     assert response.json()['total'] is not None
     assert response.json()['totalToday'] is not None
 
-def test_receipt_order_not_using_authenticated(base_url):
+def test_receipt_order_not_using_authenticated():
     response = requests.get(f"{base_url}orders")
     assert response.status_code == 401, "It didn't return the response code we were expecting."
     assert response.json()['success'] == False

@@ -1,33 +1,31 @@
 import pytest
 import requests
+from resources.config import *
 
 
 @pytest.fixture()
-def create_user(base_url):
-    json_data = {
-        "email": "test-кda3tjkh@yandex.ru",
-        "password": "333к633553",
-        "name": "3651515к3"
-        }
+def create_user():
     response = requests.post(f"{base_url}auth/register", data=json_data)
     yield response
     response_token = response.json()['accessToken']
     headers = {"authorization": response_token}
-    requests.delete("https://stellarburgers.nomoreparties.site/api/auth/user", headers=headers)
+    requests.delete(f"{base_url}auth/user", headers=headers)
 
 
 @pytest.fixture()
-def login_user(create_user, base_url):
-    json_data = {
-        "email": "test-кda3tjkh@yandex.ru",
-        "password": "333к633553"
-    }
-    response = requests.post(f"{base_url}auth/login", data=json_data)
-    return response
+def login_user():
+    requests.post(f"{base_url}auth/register", data=json_data)
+    data = {key: json_data[key] for key in ["email", "password"]}
+    response = requests.post(f"{base_url}auth/login", data=data)
+    yield response
+    response_token = response.json()['accessToken']
+    headers = {"authorization": response_token}
+    requests.delete(f"{base_url}auth/user", headers=headers)
 
 
-@pytest.fixture()
-def base_url():
-    url = "https://stellarburgers.nomoreparties.site/api/"
-    return url
+
+
+
+
+
 
